@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enjoytrip.attraction.mapper.AttractionMapper">
+
+	<resultMap type="attractionDto" id="attractionInfo">
+		<result column="content_id" property="contentId"/>
+		<result column="content_type_id" property="contentTypeId"/>
+		<result column="title" property="title"/>
+		<result column="addr1" property="addr1"/>
+		<result column="addr2" property="addr2"/>
+		<result column="zipcode" property="zipcode"/>
+		<result column="tel" property="tel"/>
+		<result column="first_image" property="firstImage"/>
+		<result column="first_image2" property="firstImage2"/>
+		<result column="readcount" property="readcount"/>
+		<result column="sido_code" property="sidoCode"/>
+		<result column="gugun_code" property="gugunCode"/>
+		<result column="latitude" property="latitude"/>
+		<result column="longitude" property="longitude"/>
+		<result column="mlevel" property="mlevel"/>
+	</resultMap>
+
+	<select id="findByCriteria" parameterType="attractionSearchDto" resultMap="attractionInfo">
+	    SELECT content_id, content_type_id, title, addr1, addr2, zipcode, tel, first_image, first_image2, readcount, sido_code, gugun_code, latitude, longitude, mlevel,   
+	           (POW((#{latitude}-latitude), 2) + POW((#{longitude}-longitude), 2)) AS distance 
+	    FROM attraction_info
+	    WHERE sido_code = #{sidoCode} AND content_type_id = #{contentTypeId} 
+	          AND (title LIKE CONCAT('%', #{keyword}, '%') OR addr1 LIKE CONCAT('%', #{keyword}, '%'))
+	    ORDER BY distance 
+	    LIMIT 15;
+	</select>
+	
+	<select id="findById" parameterType="String" resultMap="attractionInfo">
+	    SELECT content_id, content_type_id, title, addr1, addr2, zipcode, tel, first_image, first_image2, readcount, sido_code, gugun_code, latitude, longitude
+	    FROM attraction_info
+	    WHERE content_id = #{contentId}
+	</select>
+	
+	<insert id="create" parameterType="AttractionDto">
+		INSERT INTO attraction_info
+		(content_id, content_type_id, title, addr1, addr2, zipcode, tel, first_image, first_image2, readcount, sido_code, gugun_code, latitude, longitude, mlevel)
+		VALUES ( #{contentId}, #{contentTypeId}, #{title}, #{addr1}, #{addr2}, #{zipcode}, #{tel}, #{firstImage}, #{firstImage2}, #{readcount}, #{sidoCode}, #{gugunCode}, #{latitude}, #{longitude}, #{mlevel})
+	</insert>
+	
+	
+	<update id="update" parameterType="AttractionDto">
+		UPDATE attraction_info SET content_id=#{contentId}, content_type_id=#{contentTypeId}, 
+						  title=#{title}, addr1=#{addr1}, 
+						  addr2 = #{addr2}, zipcode = #{zipcode},
+						  tel=#{tel}, first_image=#{firstImage}, 
+						  first_image2=#{firstImage2}, readcount=#{readcount}, 
+						  sido_code=#{sidoCode}, gugun_code=#{gugunCode}, 
+						  latitude=#{latitude}, longitude=#{longitude}, 
+						  mlevel=#{mlevel}
+		WHERE content_id = #{contentId}
+	</update>
+	
+	
+  	<delete id="deleteAttractionDescription" parameterType="String">
+  		DELETE FROM attraction_description 
+  		WHERE content_id = #{contentId} 
+  	</delete>
+  	<delete id="deleteAttractionInfo" parameterType="String">
+  		DELETE FROM attraction_info
+		WHERE content_id = #{contentId}
+  	</delete>
+</mapper>

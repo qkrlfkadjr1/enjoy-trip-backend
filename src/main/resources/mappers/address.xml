@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enjoytrip.address.mapper.AddressMapper">
+
+	<resultMap type="Gugun" id="GugunInfo">
+		<result column="gugun_code" property="gugunCode"/>
+		<result column="gugun_name" property="gugunName"/>
+	</resultMap>
+	
+	
+	<resultMap type="Sido" id="SidoInfo">
+		<result column="sido_code" property="sidoCode"/>
+		<result column="sido_name" property="sidoName"/>
+	</resultMap>
+
+	<select id="findBySidoCode" parameterType="int" resultMap="GugunInfo">
+	    SELECT gugun_code, gugun_name FROM gugun
+		where sido_code = #{sidoCode}
+	</select>
+	
+	<select id="findByAll" resultMap="SidoInfo">
+	    SELECT sido_code, sido_name FROM sido
+	</select>
+</mapper>

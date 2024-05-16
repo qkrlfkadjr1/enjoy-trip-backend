@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enjoytrip.user.mapper.UserMapper">
+	
+	<resultMap type="UserDto" id="userAll">
+		<result column="user_id" property="userId"/>
+		<result column="user_name" property="userName"/>
+		<result column="user_password" property="userPassword"/>
+		<result column="email_id" property="emailId"/>
+		<result column="email_domain" property="emailDomain"/>
+		<result column="gugun_code" property="sidoCode"/>
+		<result column="sido_code" property="gugunCode"/>
+	</resultMap> 
+	
+	<insert id="create" parameterType="UserDto">
+		INSERT INTO user
+		(user_id, user_name, user_password, email_id, email_domain, sido_code, gugun_code )
+		VALUES ( #{userId}, #{userName}, #{userPassword}, #{emailId}, #{emailDomain}, #{sidoCode}, #{gugunCode})
+	</insert>
+	
+	<select id="findById" parameterType="String" resultMap="userAll">
+		SELECT user_id, user_name, user_password, email_id, email_domain, sido_code, gugun_code FROM user
+		WHERE user_id = #{userId}
+	</select>
+	
+	<select id="login" parameterType="String" resultType="boolean">
+		SELECT user_id, user_password FROM user
+		WHERE user_id = #{userId}, user_password = #{userPassword}
+	</select>
+	
+	<update id="update" parameterType="UserDto">
+		UPDATE user SET user_name=#{userName}, user_password=#{userPassword}, 
+						  email_id=#{emailId}, email_domain =#{emailDomain}, 
+						  sido_code = #{sidoCode}, gugun_code = #{gugunCode}
+		WHERE user_id = #{userId}
+	</update>
+  	
+  	<delete id="delete" parameterType="String">
+  		DELETE FROM user
+		WHERE user_id = #{userID}
+  	</delete>
+</mapper>
