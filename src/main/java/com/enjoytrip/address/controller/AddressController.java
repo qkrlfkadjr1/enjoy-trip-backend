@@ -2,6 +2,7 @@ package com.enjoytrip.address.controller;
 
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,7 +21,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/address")
-@CrossOrigin("http://localhost:5173/")
+@CrossOrigin("http://localhost:5173")
+@Slf4j
 public class AddressController {
     
 	private final AddressService addressService;
@@ -32,6 +34,7 @@ public class AddressController {
 
     @GetMapping("/getSido")
 	private ResponseEntity<?> getSido() {
+		log.info("getSido() 호출");
 		try {
 			List<Sido> sidos = addressService.findByAll();
 			return ResponseEntity.status(HttpStatus.OK).body(sidos);
