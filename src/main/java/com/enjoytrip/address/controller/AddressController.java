@@ -23,7 +23,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @CrossOrigin("http://localhost:5173/")
 public class AddressController {
     
-	private AddressService addressService;
+	private final AddressService addressService;
 	
     public AddressController(AddressService addressService) {
     	this.addressService = addressService;
