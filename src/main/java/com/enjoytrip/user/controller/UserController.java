@@ -2,6 +2,7 @@ package com.enjoytrip.user.controller;
 
 import java.sql.SQLException;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +19,7 @@ import com.enjoytrip.user.service.UserService;
 
 @RestController
 @RequestMapping("/users")
+@Slf4j
 public class UserController {
 
 	private final UserService userService;
@@ -28,7 +30,7 @@ public class UserController {
 
 	@PostMapping
 	private ResponseEntity<?> create(@RequestBody UserDto userDto) {
-
+		log.info("creat() 메서드 실행");
 		try {
 			userService.create(userDto);
 			return ResponseEntity.status(HttpStatus.OK).body(userDto);
