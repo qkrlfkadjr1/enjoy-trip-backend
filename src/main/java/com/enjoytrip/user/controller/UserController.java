@@ -2,22 +2,18 @@ package com.enjoytrip.user.controller;
 
 import java.sql.SQLException;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.enjoytrip.user.dto.UserDto;
 import com.enjoytrip.user.service.UserService;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin("http://localhost:5173/")
+@Slf4j
 public class UserController {
 
 	private final UserService userService;
@@ -28,7 +24,8 @@ public class UserController {
 
 	@PostMapping
 	private ResponseEntity<?> create(@RequestBody UserDto userDto) {
-
+		log.info("creat() 메서드 실행");
+		log.info("{}",userDto);
 		try {
 			userService.create(userDto);
 			return ResponseEntity.status(HttpStatus.OK).body(userDto);
